@@ -42,18 +42,27 @@
 					<a href="#estrelas">O que amo</a>
 					<a href="#carta">A carta</a>
 				</nav>
-				<div class="music" id="music-widget">
-					<button class="music__toggle" id="music-toggle" type="button" aria-label="Tocar nossa música" title="Tocar nossa música">
-						<span class="music__icon" aria-hidden="true">♪</span>
-						<span class="music__bars" aria-hidden="true"><i></i><i></i><i></i></span>
-					</button>
-					<div class="music__details">
-						<span class="music__title">a nossa música</span>
-						<label class="music__volume" for="music-volume"><span class="sr-only">Volume</span><input id="music-volume" type="range" min="0" max="1" step="0.01" value="0.55"></label>
-					</div>
-					<audio id="our-audio" src="assets/audio/nossa-musica.mp3" loop preload="none"></audio>
-				</div>
+				<a class="music-shortcut" href="#our-song">Ouvir nossa música <span aria-hidden="true">♪</span></a>
 			</header>
+
+			<aside class="music-panel" id="our-song" aria-labelledby="music-panel-title">
+				<div class="music-panel__heading">
+					<span class="music-panel__ornament" aria-hidden="true">♪</span>
+					<div>
+						<h2 id="music-panel-title">Nossa música <span aria-hidden="true">&#10084;</span></h2>
+						<p>A trilha sonora do nosso universo</p>
+					</div>
+				</div>
+				<iframe
+					title="Spotify: Planos, de BK', Luccas Carlos e Arit"
+					src="https://open.spotify.com/embed/track/7eYEQnY6Lzh3Y8jSOt3xEF?utm_source=generator&theme=0"
+					width="100%"
+					height="152"
+					allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+					loading="lazy"
+					referrerpolicy="strict-origin-when-cross-origin">
+				</iframe>
+			</aside>
 
 			<section class="hero section-shell" id="inicio">
 				<div class="hero__copy reveal">
@@ -77,8 +86,37 @@
 			<section class="story section-shell section-shell--line" id="historia">
 				<div class="section-heading reveal">
 					<p class="eyebrow">capítulo um</p>
-					<h2>O caminho até <em>nós.</em></h2>
+					<h2>O caminho até nós</h2>
 					<p class="section-heading__note">Cada instante que merece morar para sempre.</p>
+				</div>
+				<div class="story-opening reveal">
+					<span class="story-opening__star" aria-hidden="true">✦</span>
+					<p class="story-opening__title">O dia em que tudo começou</p>
+					<p class="counter__date" id="counter-date"></p>
+					<p class="story-opening__note">Desde aquele dia, nossa história continua sendo escrita.</p>
+					<span class="story-opening__star" aria-hidden="true">✧</span>
+				</div>
+				<div class="counter-section" id="contador">
+					<p class="counter-section__heading">Todo esse tempo, lado a lado</p>
+					<div class="counter" id="counter" aria-live="polite">
+						<div class="counter__units" id="counter-units">
+							<div class="counter__calendar" aria-label="Tempo desde que nos conhecemos">
+								<div class="counter__unit"><span id="count-years">0</span><small id="count-years-label">anos</small></div>
+								<span class="counter__separator" aria-hidden="true">·</span>
+								<div class="counter__unit"><span id="count-months">0</span><small id="count-months-label">meses</small></div>
+								<span class="counter__separator" aria-hidden="true">·</span>
+								<div class="counter__unit"><span id="count-days">0</span><small id="count-days-label">dias</small></div>
+							</div>
+							<div class="counter__clock" aria-label="Horas, minutos e segundos desde o último dia completo">
+								<span><b id="count-hours">00</b><small>horas</small></span>
+								<i aria-hidden="true">:</i>
+								<span><b id="count-minutes">00</b><small>minutos</small></span>
+								<i aria-hidden="true">:</i>
+								<span><b id="count-seconds">00</b><small>segundos</small></span>
+							</div>
+						</div>
+						<p class="counter__empty" id="counter-empty">O contador aparecerá quando a data do primeiro encontro estiver configurada.</p>
+					</div>
 				</div>
 				<div class="timeline" id="timeline" aria-live="polite"></div>
 				<p class="empty-note" id="timeline-empty">Nossa história está esperando pelas suas datas, fotos e palavras. Adicione as memórias em <code>config.js</code>.</p>
@@ -88,10 +126,18 @@
 				<div class="section-heading section-heading--center reveal">
 					<p class="eyebrow">capítulo dois</p>
 					<h2>Tudo o que amo <em>em você.</em></h2>
-					<p class="section-heading__note">Toque nas estrelas. Cada uma guarda um pedacinho do que sinto.</p>
+					<p class="section-heading__note">Existem tantas coisas em você que me fazem te amar... e escondi algumas delas nesse pedacinho do universo.</p>
+				</div>
+				<div class="star-instructions reveal">
+					<p class="star-instructions__prompt">✨ Toque nas estrelas brilhantes para descobrir!</p>
+					<p class="star-instructions__detail">Cada estrela revela um motivo diferente pelo qual eu amo você.</p>
 				</div>
 				<div class="star-field" id="star-field" aria-label="Estrelas com mensagens românticas"></div>
 				<div class="star-message" id="star-message" aria-live="polite"><span class="star-message__spark" aria-hidden="true">✦</span><p>Há coisas bonitas que merecem ser descobertas devagar.</p></div>
+				<div class="star-progress">
+					<p id="star-progress-label" aria-live="polite">Você descobriu 0 de 20 motivos</p>
+					<div class="star-progress__track" role="progressbar" aria-label="Progresso dos motivos descobertos" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0"><span id="star-progress-fill"></span></div>
+				</div>
 				<button class="secret secret--star" id="secret-star" type="button" aria-label="Descobrir uma surpresa especial" title="Uma surpresa para você">✧</button>
 			</section>
 
@@ -156,32 +202,6 @@
 					<p class="love-letter__signoff" id="letter-signoff">Com todo o meu amor.</p>
 				</article>
 				<button class="secret secret--envelope" id="secret-envelope" type="button" aria-label="Abrir mais uma surpresa" title="Mais uma surpresa">✉</button>
-			</section>
-
-			<section class="counter-section section-shell" id="contador">
-				<div class="counter__ornament" aria-hidden="true">✧</div>
-				<p class="eyebrow reveal">capítulo seis</p>
-				<h2 class="reveal">Há todo esse tempo,<br>minha escolha continua <em>sendo você.</em></h2>
-				<p class="counter__date" id="counter-date"></p>
-				<div class="counter" id="counter" aria-live="polite">
-					<div class="counter__units" id="counter-units">
-						<div class="counter__calendar" aria-label="Tempo desde que nos conhecemos">
-							<div class="counter__unit"><span id="count-years">0</span><small id="count-years-label">anos</small></div>
-							<span class="counter__separator" aria-hidden="true">·</span>
-							<div class="counter__unit"><span id="count-months">0</span><small id="count-months-label">meses</small></div>
-							<span class="counter__separator" aria-hidden="true">·</span>
-							<div class="counter__unit"><span id="count-days">0</span><small id="count-days-label">dias</small></div>
-						</div>
-						<div class="counter__clock" aria-label="Horas, minutos e segundos desde o último dia completo">
-							<span><b id="count-hours">00</b><small>horas</small></span>
-							<i aria-hidden="true">:</i>
-							<span><b id="count-minutes">00</b><small>minutos</small></span>
-							<i aria-hidden="true">:</i>
-							<span><b id="count-seconds">00</b><small>segundos</small></span>
-						</div>
-					</div>
-					<p class="counter__empty" id="counter-empty">O tempo de vocês começa a contar quando a data estiver em <code>config.js</code>.</p>
-				</div>
 			</section>
 
 			<section class="finale" id="finale">

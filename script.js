@@ -50,14 +50,18 @@
 
   const timeline = one("#timeline");
   const timelineItems = Array.isArray(data.timeline) ? data.timeline : [];
-  one("#timeline-empty").hidden = timelineItems.length > 0;
+  const timelineEmpty = one("#timeline-empty");
+  const hasTimelineItems = timelineItems.length > 0;
+  timelineEmpty.hidden = hasTimelineItems;
+  timelineEmpty.setAttribute("aria-hidden", String(hasTimelineItems));
   timelineItems.forEach((item, index) => {
     const article = document.createElement("article");
-    article.className = `timeline-item reveal${index % 2 ? " timeline-item--right" : ""}`;
+    article.className = `timeline-item reveal${index % 2 ? " timeline-item--right" : ""}${item.image ? "" : " timeline-item--date-art"}`;
     const imageMarkup = item.image
       ? `<button class="photo-button" type="button" data-image="${escapeHtml(item.image)}" data-caption="${escapeHtml(item.title || "")}"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.alt || item.title || "Fotografia da lembrança")}" loading="lazy"></button>`
-      : `<div class="photo-placeholder" aria-label="Adicione uma fotografia para esta lembrança"><span>✧</span><small>sua foto aqui</small></div>`;
-    article.innerHTML = `<span class="timeline-item__dot" aria-hidden="true"></span><div class="timeline-item__photo">${imageMarkup}</div><div class="timeline-item__copy"><p class="eyebrow">${escapeHtml(item.date || "uma lembrança")}</p><h3>${escapeHtml(item.title || "Um dia especial")}</h3><p>${escapeHtml(item.description || "")}</p></div>`;
+      : `<div class="timeline-date-art" role="img" aria-label="Memória de ${escapeHtml(item.date || "data não informada")}"><span class="timeline-date-art__star" aria-hidden="true">✦</span><strong>${escapeHtml(item.date || "Uma lembrança")}</strong><small>guardado com carinho</small><span class="timeline-date-art__rule" aria-hidden="true"></span></div>`;
+    const dateMarkup = item.image ? `<p class="eyebrow">${escapeHtml(item.date || "uma lembrança")}</p>` : "";
+    article.innerHTML = `<span class="timeline-item__dot" aria-hidden="true"></span><div class="timeline-item__photo">${imageMarkup}</div><div class="timeline-item__copy">${dateMarkup}<h3>${escapeHtml(item.title || "Um dia especial")}</h3><p>${escapeHtml(item.description || "")}</p></div>`;
     timeline.append(article);
     if (revealObserver) revealObserver.observe(article);
     else article.classList.add("is-visible");
@@ -65,25 +69,51 @@
 
   const starField = one("#star-field");
   const reasons = Array.isArray(data.reasons) ? data.reasons.slice(0, 24) : [];
+  const starColumns = [11, 30, 50, 70, 89];
+  const starRows = [17, 40, 63, 86];
+  const starRowOffsets = [-1.5, 1.3, -1.2, 1.8, -0.4];
   const starMessage = one("#star-message p");
+  const discoveredReasons = new Set();
+  const progressLabel = one("#star-progress-label");
+  const progressBar = one(".star-progress__track");
+  const progressFill = one("#star-progress-fill");
+  progressLabel.textContent = `Você descobriu 0 de ${reasons.length} motivos`;
+  progressBar.setAttribute("aria-valuemax", String(reasons.length));
   reasons.forEach((reason, index) => {
     const button = document.createElement("button");
     button.className = "reason-star";
     button.type = "button";
-    button.setAttribute("aria-label", `Revelar mensagem ${index + 1}`);
+    button.setAttribute("aria-label", `Revelar motivo ${index + 1} de ${reasons.length}`);
     button.setAttribute("aria-pressed", "false");
-    button.style.setProperty("--x", `${8 + Math.random() * 84}%`);
-    button.style.setProperty("--y", `${8 + Math.random() * 84}%`);
+    const row = Math.floor(index / starColumns.length);
+    const column = index % starColumns.length;
+    const position = row < starRows.length
+      ? { x: starColumns[column], y: starRows[row] + starRowOffsets[column] }
+      : { x: 10 + Math.random() * 80, y: 12 + Math.random() * 76 };
+    button.style.setProperty("--x", `${position.x}%`);
+    button.style.setProperty("--y", `${position.y}%`);
     button.style.setProperty("--delay", `${Math.random() * -5}s`);
-    button.innerHTML = "<span aria-hidden='true'>✦</span>";
+    button.innerHTML = "<span class='reason-star__glyph' aria-hidden='true'>✦</span>";
     button.addEventListener("click", () => {
       many(".reason-star.is-discovered", starField).forEach((star) => star.classList.remove("is-current"));
+      const isNewDiscovery = !discoveredReasons.has(index);
+      discoveredReasons.add(index);
       button.classList.add("is-discovered", "is-current");
+      button.classList.remove("is-next");
       button.setAttribute("aria-pressed", "true");
+      button.setAttribute("aria-label", `Motivo ${index + 1} de ${reasons.length}, descoberto. Toque para ler novamente.`);
       starMessage.textContent = reason;
       one("#star-message").classList.remove("is-lit");
       requestAnimationFrame(() => one("#star-message").classList.add("is-lit"));
+      if (isNewDiscovery) {
+        progressLabel.textContent = `Você descobriu ${discoveredReasons.size} de ${reasons.length} motivos`;
+        progressBar.setAttribute("aria-valuenow", String(discoveredReasons.size));
+        progressFill.style.width = `${reasons.length ? discoveredReasons.size / reasons.length * 100 : 0}%`;
+        const nextStar = many(".reason-star", starField).find((star) => !star.classList.contains("is-discovered"));
+        nextStar?.classList.add("is-next");
+      }
     });
+    if (index === 0) button.classList.add("is-next");
     starField.append(button);
   });
 
@@ -140,7 +170,6 @@
   let albumIsMobile = window.matchMedia("(max-width: 760px)").matches;
   let pageTurnLocked = false;
   let videoSwitching = false;
-  let musicPausedForVideo = false;
   const albumMotionScale = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1;
 
   const reportAlbumResourceFailure = (path) => {
@@ -150,17 +179,10 @@
     status.textContent = `Não foi possível carregar: ${[...unavailableAlbumResources].join(", ")}. Confira os nomes e caminhos em assets/fotos/, assets/videos/ e assets/capas-videos/.`;
   };
 
-  const restoreMusicAfterVideo = () => {
-    if (!musicPausedForVideo || [...albumVideos].some((video) => !video.paused)) return;
-    musicPausedForVideo = false;
-    audio.play().catch(() => {});
-  };
-
   const pauseAlbumVideos = () => {
     videoSwitching = true;
     albumVideos.forEach((video) => video.pause());
     videoSwitching = false;
-    restoreMusicAfterVideo();
   };
 
   const makeAlbumPhoto = (filename, index, pageTitle) => {
@@ -231,8 +253,6 @@
     };
     playButton.addEventListener("click", startVideo);
     video.addEventListener("play", () => {
-      if (!musicPausedForVideo && !audio.paused) musicPausedForVideo = true;
-      audio.pause();
       videoSwitching = true;
       albumVideos.forEach((otherVideo) => { if (otherVideo !== video) otherVideo.pause(); });
       videoSwitching = false;
@@ -240,11 +260,9 @@
     });
     video.addEventListener("pause", () => {
       figure.classList.remove("is-playing");
-      if (!videoSwitching) restoreMusicAfterVideo();
     });
     video.addEventListener("ended", () => {
       figure.classList.remove("is-playing");
-      restoreMusicAfterVideo();
     });
     video.addEventListener("error", () => {
       reportAlbumResourceFailure(video.dataset.src);
@@ -475,7 +493,7 @@
     if (opened) one("#love-letter").scrollIntoView({ behavior: "smooth", block: "center" });
   });
 
-  const counterStart = data.relationshipStart;
+  const counterStart = data.firstMeetingDate;
   const counterUnits = one("#counter-units");
   const counterEmpty = one("#counter-empty");
   const dateOnlyMatch = typeof counterStart === "string" && counterStart.match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -485,7 +503,7 @@
   const dateIsExact = !dateOnlyMatch || (parsedStart.getFullYear() === Number(dateOnlyMatch[1]) && parsedStart.getMonth() === Number(dateOnlyMatch[2]) - 1 && parsedStart.getDate() === Number(dateOnlyMatch[3]));
   const validStart = dateIsExact && parsedStart && !Number.isNaN(parsedStart.getTime()) && parsedStart <= new Date();
   one("#counter-date").textContent = validStart
-    ? `Nos conhecemos em ${parsedStart.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" })}.`
+    ? parsedStart.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" })
     : "";
   one("#counter-date").hidden = !validStart || !dateIsExact;
   counterUnits.hidden = !validStart;
@@ -546,40 +564,6 @@
     updateCounter();
     window.setInterval(updateCounter, 1000);
   }
-
-  const audio = one("#our-audio");
-  const musicToggle = one("#music-toggle");
-  const musicWidget = one("#music-widget");
-  audio.volume = 0.55;
-  musicToggle.addEventListener("click", async () => {
-    if (!audio.paused) {
-      audio.pause();
-      return;
-    }
-    try {
-      await audio.play();
-    } catch (error) {
-      musicWidget.classList.add("is-unavailable");
-      one(".music__title", musicWidget).textContent = "música não adicionada";
-      musicToggle.title = "Adicione assets/audio/nossa-musica.mp3 para ativar a música";
-    }
-  });
-  audio.addEventListener("play", () => {
-    musicWidget.classList.add("is-playing");
-    musicToggle.setAttribute("aria-label", "Pausar nossa música");
-    musicToggle.title = "Pausar nossa música";
-  });
-  audio.addEventListener("pause", () => {
-    musicWidget.classList.remove("is-playing");
-    musicToggle.setAttribute("aria-label", "Tocar nossa música");
-    musicToggle.title = "Tocar nossa música";
-  });
-  audio.addEventListener("error", () => {
-    musicWidget.classList.add("is-unavailable");
-    one(".music__title", musicWidget).textContent = "música não adicionada";
-    musicToggle.title = "Adicione assets/audio/nossa-musica.mp3 para ativar a música";
-  });
-  one("#music-volume").addEventListener("input", (event) => { audio.volume = Number(event.target.value); });
 
   const toast = one("#toast");
   let toastTimer;

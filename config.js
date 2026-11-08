@@ -1,6 +1,6 @@
 /* Personalize este arquivo: datas em AAAA-MM-DD ou ISO 8601; fotos com caminhos relativos. */
 window.OUR_UNIVERSE = {
-  relationshipStart: "2025-05-07",
+  firstMeetingDate: "2025-05-07",
   letter: {
     salutation: "Meu amor,",
     paragraphs: [
@@ -10,7 +10,13 @@ window.OUR_UNIVERSE = {
     ],
     signoff: "Com todo o meu amor."
   },
-  timeline: [],
+  timeline: [
+    {
+      date: "7 de maio de 2025",
+      title: "O dia em que nos conhecemos",
+      description: "O começo de uma história que ainda tem tantas páginas pela frente."
+    }
+  ],
   gallery: [],
   finalPhotos: [],
   reasons: [
