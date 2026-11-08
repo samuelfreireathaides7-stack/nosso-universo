@@ -27,7 +27,7 @@
   const intro = one("#intro");
   const experience = one("#experience");
   const chapterNumber = Number(document.body.dataset.chapter || 1);
-  const chapterCount = 7;
+  const chapterCount = 8;
   many(".chapter-progress__label").forEach((label) => {
     label.textContent = `Capítulo ${chapterNumber} de ${chapterCount}`;
   });
