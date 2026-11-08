@@ -12,7 +12,10 @@
       star.style.setProperty("--x", `${Math.random() * 100}%`);
       star.style.setProperty("--y", `${Math.random() * 100}%`);
       star.style.setProperty("--delay", `${Math.random() * -8}s`);
-      star.style.setProperty("--size", `${1 + Math.random() * 2.2}px`);
+      star.style.setProperty("--size", `${index % 9 === 0 ? 1.8 + Math.random() * 1.2 : 0.7 + Math.random() * 1.1}px`);
+      star.style.setProperty("--star-color", ["#fff8f1", "#d8e5ff", "#f4d8df", "#eadbb9"][index % 4]);
+      star.style.setProperty("--star-opacity", `${0.24 + Math.random() * 0.38}`);
+      star.style.setProperty("--twinkle-duration", `${4 + Math.random() * 5}s`);
       parent.append(star);
     }
   };
@@ -475,17 +478,70 @@
   const counterStart = data.relationshipStart;
   const counterUnits = one("#counter-units");
   const counterEmpty = one("#counter-empty");
-  const parsedStart = counterStart ? new Date(counterStart) : null;
-  const validStart = parsedStart && !Number.isNaN(parsedStart.getTime()) && parsedStart <= new Date();
+  const dateOnlyMatch = typeof counterStart === "string" && counterStart.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  const parsedStart = dateOnlyMatch
+    ? new Date(Number(dateOnlyMatch[1]), Number(dateOnlyMatch[2]) - 1, Number(dateOnlyMatch[3]))
+    : counterStart ? new Date(counterStart) : null;
+  const dateIsExact = !dateOnlyMatch || (parsedStart.getFullYear() === Number(dateOnlyMatch[1]) && parsedStart.getMonth() === Number(dateOnlyMatch[2]) - 1 && parsedStart.getDate() === Number(dateOnlyMatch[3]));
+  const validStart = dateIsExact && parsedStart && !Number.isNaN(parsedStart.getTime()) && parsedStart <= new Date();
+  one("#counter-date").textContent = validStart
+    ? `Nos conhecemos em ${parsedStart.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" })}.`
+    : "";
+  one("#counter-date").hidden = !validStart || !dateIsExact;
   counterUnits.hidden = !validStart;
   counterEmpty.hidden = Boolean(validStart);
   if (validStart) {
+    const addCalendarMonths = (date, months) => {
+      const monthIndex = date.getMonth() + months;
+      const year = date.getFullYear() + Math.floor(monthIndex / 12);
+      const month = ((monthIndex % 12) + 12) % 12;
+      const day = Math.min(date.getDate(), new Date(year, month + 1, 0).getDate());
+      return new Date(year, month, day, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+    };
+
+    const getCalendarDifference = (start, end) => {
+      let years = end.getFullYear() - start.getFullYear();
+      let yearAnchor = addCalendarMonths(start, years * 12);
+      if (yearAnchor > end) {
+        years -= 1;
+        yearAnchor = addCalendarMonths(start, years * 12);
+      }
+
+      let months = (end.getFullYear() - yearAnchor.getFullYear()) * 12 + end.getMonth() - yearAnchor.getMonth();
+      let monthAnchor = addCalendarMonths(yearAnchor, months);
+      if (monthAnchor > end) {
+        months -= 1;
+        monthAnchor = addCalendarMonths(yearAnchor, months);
+      }
+
+      const anchorDay = Date.UTC(monthAnchor.getFullYear(), monthAnchor.getMonth(), monthAnchor.getDate());
+      const currentDay = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
+      const days = Math.floor((currentDay - anchorDay) / 86400000);
+      const dayAnchor = new Date(monthAnchor.getFullYear(), monthAnchor.getMonth(), monthAnchor.getDate() + days,
+        monthAnchor.getHours(), monthAnchor.getMinutes(), monthAnchor.getSeconds(), monthAnchor.getMilliseconds());
+      const remainingSeconds = Math.max(0, Math.floor((end.getTime() - dayAnchor.getTime()) / 1000));
+
+      return {
+        years,
+        months,
+        days,
+        hours: Math.floor(remainingSeconds / 3600),
+        minutes: Math.floor(remainingSeconds / 60) % 60,
+        seconds: remainingSeconds % 60
+      };
+    };
+
     const updateCounter = () => {
-      const seconds = Math.max(0, Math.floor((Date.now() - parsedStart.getTime()) / 1000));
-      one("#count-days").textContent = Math.floor(seconds / 86400).toLocaleString("pt-BR");
-      one("#count-hours").textContent = String(Math.floor(seconds / 3600) % 24).padStart(2, "0");
-      one("#count-minutes").textContent = String(Math.floor(seconds / 60) % 60).padStart(2, "0");
-      one("#count-seconds").textContent = String(seconds % 60).padStart(2, "0");
+      const difference = getCalendarDifference(parsedStart, new Date());
+      one("#count-years").textContent = difference.years.toLocaleString("pt-BR");
+      one("#count-months").textContent = String(difference.months);
+      one("#count-days").textContent = String(difference.days);
+      one("#count-years-label").textContent = difference.years === 1 ? "ano" : "anos";
+      one("#count-months-label").textContent = difference.months === 1 ? "mês" : "meses";
+      one("#count-days-label").textContent = difference.days === 1 ? "dia" : "dias";
+      one("#count-hours").textContent = String(difference.hours).padStart(2, "0");
+      one("#count-minutes").textContent = String(difference.minutes).padStart(2, "0");
+      one("#count-seconds").textContent = String(difference.seconds).padStart(2, "0");
     };
     updateCounter();
     window.setInterval(updateCounter, 1000);

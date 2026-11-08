@@ -1,6 +1,6 @@
 /* Personalize este arquivo: datas em AAAA-MM-DD ou ISO 8601; fotos com caminhos relativos. */
 window.OUR_UNIVERSE = {
-  relationshipStart: "",
+  relationshipStart: "2025-05-07",
   letter: {
     salutation: "Meu amor,",
     paragraphs: [

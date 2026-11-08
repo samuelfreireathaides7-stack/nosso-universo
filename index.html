@@ -14,6 +14,7 @@
 	<script src="script.js" defer></script>
 </head>
 <body>
+	<div class="cosmic-backdrop" aria-hidden="true"></div>
 	<div class="ambient ambient--one" aria-hidden="true"></div>
 	<div class="ambient ambient--two" aria-hidden="true"></div>
 	<div class="site-stars" id="site-stars" aria-hidden="true"></div>
@@ -161,15 +162,23 @@
 				<div class="counter__ornament" aria-hidden="true">✧</div>
 				<p class="eyebrow reveal">capítulo seis</p>
 				<h2 class="reveal">Há todo esse tempo,<br>minha escolha continua <em>sendo você.</em></h2>
+				<p class="counter__date" id="counter-date"></p>
 				<div class="counter" id="counter" aria-live="polite">
 					<div class="counter__units" id="counter-units">
-						<div class="counter__unit"><span id="count-days">0</span><small>dias</small></div>
-						<span class="counter__separator">:</span>
-						<div class="counter__unit"><span id="count-hours">00</span><small>horas</small></div>
-						<span class="counter__separator">:</span>
-						<div class="counter__unit"><span id="count-minutes">00</span><small>minutos</small></div>
-						<span class="counter__separator">:</span>
-						<div class="counter__unit"><span id="count-seconds">00</span><small>segundos</small></div>
+						<div class="counter__calendar" aria-label="Tempo desde que nos conhecemos">
+							<div class="counter__unit"><span id="count-years">0</span><small id="count-years-label">anos</small></div>
+							<span class="counter__separator" aria-hidden="true">·</span>
+							<div class="counter__unit"><span id="count-months">0</span><small id="count-months-label">meses</small></div>
+							<span class="counter__separator" aria-hidden="true">·</span>
+							<div class="counter__unit"><span id="count-days">0</span><small id="count-days-label">dias</small></div>
+						</div>
+						<div class="counter__clock" aria-label="Horas, minutos e segundos desde o último dia completo">
+							<span><b id="count-hours">00</b><small>horas</small></span>
+							<i aria-hidden="true">:</i>
+							<span><b id="count-minutes">00</b><small>minutos</small></span>
+							<i aria-hidden="true">:</i>
+							<span><b id="count-seconds">00</b><small>segundos</small></span>
+						</div>
 					</div>
 					<p class="counter__empty" id="counter-empty">O tempo de vocês começa a contar quando a data estiver em <code>config.js</code>.</p>
 				</div>
