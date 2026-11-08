@@ -37,3 +37,24 @@ body.is-music-playing .music-disc{animation:vinyl-turn 9s linear infinite}@keyfr
 body.is-framed-chapter .chapter-navigation{padding-bottom:7rem}
 @media(max-width:760px){.music-story{padding-top:7rem}.music-story h1{font-size:clamp(2.2rem,10vw,3.4rem)}.music-hero-card{grid-template-columns:1fr;padding:1.4rem}.music-disc-wrap{min-height:14rem}.music-disc{width:min(50vw,11rem)}.music-hero-card__content{text-align:center}.music-main-button{width:100%}.music-dock{right:.65rem;bottom:calc(.65rem + env(safe-area-inset-bottom,0px));width:min(calc(100vw - 1.3rem),22rem)}}
 @media(prefers-reduced-motion:reduce){body.is-music-playing .music-disc{animation:none}}
+
+/* Player oficial do YouTube: nunca ocultar ou cobrir o vídeo durante a reprodução. */
+.youtube-slot{position:relative;width:100%;min-height:310px;margin:1rem 0 .65rem;border:1px solid rgba(233,212,167,.18);border-radius:14px;background:linear-gradient(135deg,rgba(28,20,38,.98),rgba(48,25,44,.83));}
+.youtube-slot__hint{display:flex;align-items:center;justify-content:center;min-height:300px;padding:1rem;text-align:center;color:rgba(233,212,167,.7);font-size:.78rem}
+.youtube-instruction{margin:.4rem 0;color:#f0d7df;font-size:.81rem;line-height:1.7}
+.youtube-instruction strong{color:#fff5f8;font-weight:600}
+.youtube-shell{position:fixed;z-index:80;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;width:min(355px,calc(100vw - 1.25rem));height:280px;overflow:hidden;border:1px solid rgba(233,212,167,.4);border-radius:16px;background:#14101f;box-shadow:0 16px 45px rgba(0,0,0,.6);}
+.youtube-shell[hidden]{display:none!important}
+.youtube-shell--attached{left:var(--youtube-left);top:var(--youtube-top);width:var(--youtube-width);height:var(--youtube-height);right:auto;bottom:auto;}
+.youtube-shell__heading{height:36px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:0 .85rem;background:linear-gradient(105deg,#392032,#17121f);color:#fff7f4;font-size:.72rem;}
+.youtube-shell__heading a{color:var(--gold);text-decoration:underline;text-underline-offset:3px;white-space:nowrap;font-size:.63rem}
+.youtube-shell__video{flex:1;min-height:210px}
+.youtube-shell__video iframe{display:block;border:0;width:100%;height:100%;min-width:200px;min-height:210px;background:#111;}
+body.is-framed-chapter .chapter-navigation{padding-bottom:19rem}
+body.is-framed-chapter .music-story{padding-bottom:19rem}
+@media(max-width:760px){
+.youtube-shell{right:.5rem;bottom:calc(.5rem + env(safe-area-inset-bottom,0px));height:258px;width:min(340px,calc(100vw - 1rem));}
+.youtube-shell--attached{left:var(--youtube-left);top:var(--youtube-top);width:var(--youtube-width);height:var(--youtube-height);right:auto;bottom:auto;}
+.youtube-slot{min-height:295px;}
+.youtube-slot__hint{min-height:285px;}
+}
