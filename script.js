@@ -6,6 +6,7 @@
   const many = (selector, root = document) => [...root.querySelectorAll(selector)];
   const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   const createStar = (parent, count, className) => {
+    if (!parent) return;
     for (let index = 0; index < count; index += 1) {
       const star = document.createElement("i");
       star.className = className;
@@ -25,16 +26,49 @@
 
   const intro = one("#intro");
   const experience = one("#experience");
-  one("#enter-button").addEventListener("click", () => {
-    intro.classList.add("is-leaving");
-    experience.classList.add("is-entering");
-    experience.setAttribute("aria-hidden", "false");
-    document.body.classList.add("is-open");
-    window.setTimeout(() => {
-      intro.hidden = true;
-      one("#inicio").focus({ preventScroll: true });
-    }, 1400);
+  const chapterNumber = Number(document.body.dataset.chapter || 1);
+  const chapterCount = 7;
+  many(".chapter-progress__label").forEach((label) => {
+    label.textContent = `Capítulo ${chapterNumber} de ${chapterCount}`;
   });
+  many(".chapter-progress__fill").forEach((fill) => {
+    fill.style.width = `${chapterNumber / chapterCount * 100}%`;
+  });
+
+  if (!intro && experience) {
+    experience.classList.add("chapter-entering");
+    window.setTimeout(() => experience.classList.remove("chapter-entering"), 750);
+  }
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest("a[data-chapter-link]");
+    if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || reducedMotion) return;
+    event.preventDefault();
+    document.body.classList.add("chapter-leaving");
+    window.setTimeout(() => { window.location.href = link.href; }, 220);
+  });
+
+  many("a[href='#spotify-player']").forEach((link) => {
+    link.addEventListener("click", () => {
+      const player = one("#spotify-player");
+      if (player) player.open = true;
+    });
+  });
+
+  const enterButton = one("#enter-button");
+  if (enterButton) {
+    enterButton.addEventListener("click", () => {
+      intro.classList.add("is-leaving");
+      experience.classList.add("is-entering");
+      experience.setAttribute("aria-hidden", "false");
+      document.body.classList.add("is-open");
+      window.setTimeout(() => {
+        intro.hidden = true;
+        one("#inicio")?.focus({ preventScroll: true });
+      }, 1400);
+    });
+  }
 
   const revealObserver = "IntersectionObserver" in window
     ? new IntersectionObserver((entries, observer) => {
@@ -50,30 +84,42 @@
 
   const timeline = one("#timeline");
   const timelineItems = Array.isArray(data.timeline) ? data.timeline : [];
-  const timelineEmpty = one("#timeline-empty");
-  const hasTimelineItems = timelineItems.length > 0;
-  timelineEmpty.hidden = hasTimelineItems;
-  timelineEmpty.setAttribute("aria-hidden", String(hasTimelineItems));
-  timelineItems.forEach((item, index) => {
-    const article = document.createElement("article");
-    article.className = `timeline-item reveal${index % 2 ? " timeline-item--right" : ""}${item.image ? "" : " timeline-item--date-art"}`;
-    const imageMarkup = item.image
-      ? `<button class="photo-button" type="button" data-image="${escapeHtml(item.image)}" data-caption="${escapeHtml(item.title || "")}"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.alt || item.title || "Fotografia da lembrança")}" loading="lazy"></button>`
-      : `<div class="timeline-date-art" role="img" aria-label="Memória de ${escapeHtml(item.date || "data não informada")}"><span class="timeline-date-art__star" aria-hidden="true">✦</span><strong>${escapeHtml(item.date || "Uma lembrança")}</strong><small>guardado com carinho</small><span class="timeline-date-art__rule" aria-hidden="true"></span></div>`;
-    const dateMarkup = item.image ? `<p class="eyebrow">${escapeHtml(item.date || "uma lembrança")}</p>` : "";
-    article.innerHTML = `<span class="timeline-item__dot" aria-hidden="true"></span><div class="timeline-item__photo">${imageMarkup}</div><div class="timeline-item__copy">${dateMarkup}<h3>${escapeHtml(item.title || "Um dia especial")}</h3><p>${escapeHtml(item.description || "")}</p></div>`;
-    timeline.append(article);
-    if (revealObserver) revealObserver.observe(article);
-    else article.classList.add("is-visible");
-  });
+  if (timeline) {
+    const timelineEmpty = one("#timeline-empty");
+    const hasTimelineItems = timelineItems.length > 0;
+    if (timelineEmpty) {
+      timelineEmpty.hidden = hasTimelineItems;
+      timelineEmpty.setAttribute("aria-hidden", String(hasTimelineItems));
+    }
+    timelineItems.forEach((item, index) => {
+      const article = document.createElement("article");
+      article.className = `timeline-item reveal${index % 2 ? " timeline-item--right" : ""}${item.image ? "" : " timeline-item--date-art"}`;
+      const imageMarkup = item.image
+        ? `<button class="photo-button" type="button" data-image="${escapeHtml(item.image)}" data-caption="${escapeHtml(item.title || "")}"><img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.alt || item.title || "Fotografia da lembrança")}" loading="lazy"></button>`
+        : `<div class="timeline-date-art" role="img" aria-label="Memória de ${escapeHtml(item.date || "data não informada")}"><span class="timeline-date-art__star" aria-hidden="true">✦</span><strong>${escapeHtml(item.date || "Uma lembrança")}</strong><small>guardado com carinho</small><span class="timeline-date-art__rule" aria-hidden="true"></span></div>`;
+      const dateMarkup = item.image ? `<p class="eyebrow">${escapeHtml(item.date || "uma lembrança")}</p>` : "";
+      article.innerHTML = `<span class="timeline-item__dot" aria-hidden="true"></span><div class="timeline-item__photo">${imageMarkup}</div><div class="timeline-item__copy">${dateMarkup}<h3>${escapeHtml(item.title || "Um dia especial")}</h3><p>${escapeHtml(item.description || "")}</p></div>`;
+      timeline.append(article);
+      if (revealObserver) revealObserver.observe(article);
+      else article.classList.add("is-visible");
+    });
+  }
 
   const starField = one("#star-field");
+  if (starField) {
   const reasons = Array.isArray(data.reasons) ? data.reasons.slice(0, 24) : [];
   const starColumns = [11, 30, 50, 70, 89];
   const starRows = [17, 40, 63, 86];
   const starRowOffsets = [-1.5, 1.3, -1.2, 1.8, -0.4];
   const starMessage = one("#star-message p");
-  const discoveredReasons = new Set();
+  const starProgressStorageKey = "our-universe-star-progress";
+  let savedStarProgress = { discovered: [], current: null };
+  try {
+    savedStarProgress = JSON.parse(sessionStorage.getItem(starProgressStorageKey)) || savedStarProgress;
+  } catch (error) {
+    savedStarProgress = { discovered: [], current: null };
+  }
+  const discoveredReasons = new Set((Array.isArray(savedStarProgress.discovered) ? savedStarProgress.discovered : []).filter((index) => Number.isInteger(index) && index >= 0 && index < reasons.length));
   const progressLabel = one("#star-progress-label");
   const progressBar = one(".star-progress__track");
   const progressFill = one("#star-progress-fill");
@@ -85,6 +131,11 @@
     button.type = "button";
     button.setAttribute("aria-label", `Revelar motivo ${index + 1} de ${reasons.length}`);
     button.setAttribute("aria-pressed", "false");
+    if (discoveredReasons.has(index)) {
+      button.classList.add("is-discovered");
+      button.setAttribute("aria-pressed", "true");
+      button.setAttribute("aria-label", `Motivo ${index + 1} de ${reasons.length}, descoberto. Toque para ler novamente.`);
+    }
     const row = Math.floor(index / starColumns.length);
     const column = index % starColumns.length;
     const position = row < starRows.length
@@ -105,6 +156,9 @@
       starMessage.textContent = reason;
       one("#star-message").classList.remove("is-lit");
       requestAnimationFrame(() => one("#star-message").classList.add("is-lit"));
+      try {
+        sessionStorage.setItem(starProgressStorageKey, JSON.stringify({ discovered: [...discoveredReasons], current: index }));
+      } catch (error) {}
       if (isNewDiscovery) {
         progressLabel.textContent = `Você descobriu ${discoveredReasons.size} de ${reasons.length} motivos`;
         progressBar.setAttribute("aria-valuenow", String(discoveredReasons.size));
@@ -113,12 +167,21 @@
         nextStar?.classList.add("is-next");
       }
     });
-    if (index === 0) button.classList.add("is-next");
     starField.append(button);
   });
+  const nextUndiscoveredStar = many(".reason-star", starField).find((star) => !star.classList.contains("is-discovered"));
+  nextUndiscoveredStar?.classList.add("is-next");
+  if (Number.isInteger(savedStarProgress.current) && reasons[savedStarProgress.current]) {
+    starMessage.textContent = reasons[savedStarProgress.current];
+    one("#star-message").classList.add("is-lit");
+  }
+  progressLabel.textContent = `Você descobriu ${discoveredReasons.size} de ${reasons.length} motivos`;
+  progressBar.setAttribute("aria-valuenow", String(discoveredReasons.size));
+  progressFill.style.width = `${reasons.length ? discoveredReasons.size / reasons.length * 100 : 0}%`;
+  }
 
   const memoryGrid = one("#memory-grid");
-  (Array.isArray(data.smallWorld) ? data.smallWorld : []).forEach((memory) => {
+  if (memoryGrid) (Array.isArray(data.smallWorld) ? data.smallWorld : []).forEach((memory) => {
     const card = document.createElement("button");
     card.className = "memory-card";
     card.type = "button";
@@ -135,7 +198,7 @@
   const modalImage = one("#modal-image");
   const modalCaption = one("#modal-caption");
   const openPhoto = (src, caption) => {
-    if (!src) return;
+    if (!src || !modal || !modalImage || !modalCaption) return;
     modalImage.src = src;
     modalImage.alt = caption || "Fotografia ampliada";
     modalCaption.textContent = caption;
@@ -144,19 +207,21 @@
     one("#modal-close").focus();
   };
   const closePhoto = () => {
+    if (!modal || !modalImage) return;
     modal.hidden = true;
     modalImage.removeAttribute("src");
     document.body.classList.remove("has-modal");
   };
-  one("#modal-close").addEventListener("click", closePhoto);
-  modal.addEventListener("click", (event) => { if (event.target === modal) closePhoto(); });
-  timeline.addEventListener("click", (event) => {
+  one("#modal-close")?.addEventListener("click", closePhoto);
+  modal?.addEventListener("click", (event) => { if (event.target === modal) closePhoto(); });
+  timeline?.addEventListener("click", (event) => {
     const button = event.target.closest(".photo-button");
     if (button) openPhoto(button.dataset.image, button.dataset.caption);
   });
-  document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !modal.hidden) closePhoto(); });
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape" && modal && !modal.hidden) closePhoto(); });
 
   const albumCover = one("#album-cover");
+  if (albumCover) {
   const albumReader = one("#album-reader");
   const albumBook = one("#album-book");
   const albumSpread = one("#album-spread");
@@ -296,11 +361,11 @@
       ornament.textContent = "✦";
       const message = document.createElement("p");
       message.textContent = "E pensar que ainda temos tantas páginas para escrever juntos...";
-      const continueButton = document.createElement("button");
+      const continueButton = document.createElement("a");
       continueButton.className = "button button--primary album-continue";
-      continueButton.type = "button";
+      continueButton.href = "mundo.html";
+      continueButton.dataset.chapterLink = "";
       continueButton.textContent = "Continuar nossa história ♥";
-      continueButton.addEventListener("click", closeAlbumForFinale);
       closing.append(ornament, message, continueButton);
       paper.append(closing);
     } else {
@@ -383,16 +448,6 @@
     }, albumMotionScale ? 390 : 0);
   };
 
-  const closeAlbumForFinale = () => {
-    pauseAlbumVideos();
-    albumReader.classList.add("is-closing");
-    window.setTimeout(() => {
-      albumReader.hidden = true;
-      albumReader.classList.remove("is-closing");
-      one("#finale").scrollIntoView({ behavior: albumMotionScale ? "smooth" : "auto", block: "start" });
-    }, albumMotionScale ? 650 : 0);
-  };
-
   const openAlbum = () => {
     albumCover.classList.add("is-opening");
     albumReader.hidden = false;
@@ -471,31 +526,31 @@
       error.textContent = `O livro e o botão continuam disponíveis, mas as páginas não puderam ser carregadas. ${protocolNote} Arquivos esperados: album-manifest.json, assets/fotos/, assets/videos/ e assets/capas-videos/.`;
       error.hidden = false;
     });
+  }
 
-  one("#secret-heart").addEventListener("click", () => {
-    if (albumCoverPhoto) openPhoto(albumCoverPhoto, "Nossa história, página por página");
-    else if (timelineItems.some((item) => item.image)) {
-      const memory = timelineItems.find((item) => item.image);
-      openPhoto(memory.image, memory.title || "Uma lembrança nossa");
-    }
-    else showToast("Uma lembrança especial está esperando para ser aberta. ♥");
-  });
+  const secretHeart = one("#secret-heart");
+  if (secretHeart && !albumCover) {
+    secretHeart.addEventListener("click", () => openPhoto("assets/fotos/33421.jpg", "Nossa história, página por página"));
+  }
 
   const envelope = one("#envelope");
-  const letter = data.letter || {};
-  one("#letter-salutation").textContent = letter.salutation || "Meu amor,";
-  one("#letter-text").innerHTML = (Array.isArray(letter.paragraphs) ? letter.paragraphs : []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
-  one("#letter-signoff").textContent = letter.signoff || "Com todo o meu amor.";
-  envelope.addEventListener("click", () => {
-    const opened = envelope.classList.toggle("is-open");
-    envelope.setAttribute("aria-expanded", String(opened));
-    one("#love-letter").hidden = !opened;
-    if (opened) one("#love-letter").scrollIntoView({ behavior: "smooth", block: "center" });
-  });
+  if (envelope) {
+    const letter = data.letter || {};
+    one("#letter-salutation").textContent = letter.salutation || "Meu amor,";
+    one("#letter-text").innerHTML = (Array.isArray(letter.paragraphs) ? letter.paragraphs : []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("");
+    one("#letter-signoff").textContent = letter.signoff || "Com todo o meu amor.";
+    envelope.addEventListener("click", () => {
+      const opened = envelope.classList.toggle("is-open");
+      envelope.setAttribute("aria-expanded", String(opened));
+      one("#love-letter").hidden = !opened;
+      if (opened) one("#love-letter").scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  }
 
-  const counterStart = data.firstMeetingDate;
   const counterUnits = one("#counter-units");
   const counterEmpty = one("#counter-empty");
+  if (counterUnits && counterEmpty) {
+  const counterStart = data.firstMeetingDate;
   const dateOnlyMatch = typeof counterStart === "string" && counterStart.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   const parsedStart = dateOnlyMatch
     ? new Date(Number(dateOnlyMatch[1]), Number(dateOnlyMatch[2]) - 1, Number(dateOnlyMatch[3]))
@@ -564,19 +619,22 @@
     updateCounter();
     window.setInterval(updateCounter, 1000);
   }
+  }
 
   const toast = one("#toast");
   let toastTimer;
   function showToast(message) {
+    if (!toast) return;
     toast.textContent = message;
     toast.classList.add("is-visible");
     window.clearTimeout(toastTimer);
     toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 3600);
   }
-  one("#secret-star").addEventListener("click", () => showToast("Entre tantas estrelas, eu ainda escolheria você. ✦"));
-  one("#secret-envelope").addEventListener("click", () => showToast("A lembrança mais bonita ainda está por vir: a próxima história de vocês."));
+  one("#secret-star")?.addEventListener("click", () => showToast("Entre tantas estrelas, eu ainda escolheria você. ✦"));
+  one("#secret-envelope")?.addEventListener("click", () => showToast("A lembrança mais bonita ainda está por vir: a próxima história de vocês."));
 
   const finale = one("#finale");
+  if (finale) {
   const wishButton = one("#wish-button");
   const finalePhotos = one("#finale-photos");
   (Array.isArray(data.finalPhotos) ? data.finalPhotos.slice(0, 4) : []).forEach((item, index) => {
@@ -594,6 +652,7 @@
     window.setTimeout(() => finale.classList.add("show-wish"), 1600);
     window.setTimeout(() => finale.classList.add("show-love"), 4700);
   });
+  }
 
   if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     document.addEventListener("pointermove", (event) => {

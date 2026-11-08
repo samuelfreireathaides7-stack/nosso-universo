@@ -13,7 +13,7 @@
 	<script src="config.js" defer></script>
 	<script src="script.js" defer></script>
 </head>
-<body>
+<body data-chapter="1">
 	<div class="cosmic-backdrop" aria-hidden="true"></div>
 	<div class="ambient ambient--one" aria-hidden="true"></div>
 	<div class="ambient ambient--two" aria-hidden="true"></div>
@@ -36,40 +36,22 @@
 
 		<div class="experience" id="experience" aria-hidden="true">
 			<header class="topbar">
-				<a class="wordmark" href="#inicio" aria-label="Nosso Universo, início"><span class="wordmark__spark">✳</span> nosso universo</a>
-				<nav class="topbar__nav" aria-label="Navegação principal">
-					<a href="#historia">Nossa história</a>
-					<a href="#estrelas">O que amo</a>
-					<a href="#carta">A carta</a>
-				</nav>
-				<a class="music-shortcut" href="#our-song">Ouvir nossa música <span aria-hidden="true">♪</span></a>
+				<a class="wordmark" href="./index.html" data-chapter-link aria-label="Nosso Universo, início"><span class="wordmark__spark">✳</span> nosso universo</a>
+				<div class="chapter-progress" aria-label="Progresso da história"><span class="chapter-progress__label">Capítulo 1 de 7</span><span class="chapter-progress__track"><i class="chapter-progress__fill"></i></span></div>
+				<a class="music-shortcut" href="#spotify-player">Ouvir nossa música <span aria-hidden="true">♪</span></a>
 			</header>
 
-			<aside class="music-panel" id="our-song" aria-labelledby="music-panel-title">
-				<div class="music-panel__heading">
-					<span class="music-panel__ornament" aria-hidden="true">♪</span>
-					<div>
-						<h2 id="music-panel-title">Nossa música <span aria-hidden="true">&#10084;</span></h2>
-						<p>A trilha sonora do nosso universo</p>
-					</div>
-				</div>
-				<iframe
-					title="Spotify: Planos, de BK', Luccas Carlos e Arit"
-					src="https://open.spotify.com/embed/track/7eYEQnY6Lzh3Y8jSOt3xEF?utm_source=generator&theme=0"
-					width="100%"
-					height="152"
-					allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-					loading="lazy"
-					referrerpolicy="strict-origin-when-cross-origin">
-				</iframe>
-			</aside>
+			<details class="chapter-music" id="spotify-player">
+				<summary>Nossa música <span aria-hidden="true">&#10084;</span> · A trilha sonora do nosso universo</summary>
+				<div class="chapter-music__player"><iframe title="Spotify: Planos, de BK', Luccas Carlos e Arit" src="https://open.spotify.com/embed/track/7eYEQnY6Lzh3Y8jSOt3xEF?utm_source=generator&theme=0" width="100%" height="152" allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+			</details>
 
 			<section class="hero section-shell" id="inicio">
 				<div class="hero__copy reveal">
 					<p class="eyebrow">um universo inteiro cabe em nós</p>
 					<h2>O meu lugar<br>favorito é <em>com você.</em></h2>
 					<p class="hero__lead">Entre tantas possibilidades, existe essa certeza bonita: a vida fica mais leve quando é vivida ao seu lado.</p>
-					<a class="text-link" href="#historia">Deslize para descobrir <span aria-hidden="true">↓</span></a>
+					<a class="text-link" href="historia.html" data-chapter-link>Deslize para descobrir <span aria-hidden="true">↓</span></a>
 				</div>
 				<div class="hero__art" aria-hidden="true">
 					<div class="hero__halo"></div>
@@ -83,141 +65,11 @@
 				<span class="hero__index" aria-hidden="true">01 — 07</span>
 			</section>
 
-			<section class="story section-shell section-shell--line" id="historia">
-				<div class="section-heading reveal">
-					<p class="eyebrow">capítulo um</p>
-					<h2>O caminho até nós</h2>
-					<p class="section-heading__note">Cada instante que merece morar para sempre.</p>
-				</div>
-				<div class="story-opening reveal">
-					<span class="story-opening__star" aria-hidden="true">✦</span>
-					<p class="story-opening__title">O dia em que tudo começou</p>
-					<p class="counter__date" id="counter-date"></p>
-					<p class="story-opening__note">Desde aquele dia, nossa história continua sendo escrita.</p>
-					<span class="story-opening__star" aria-hidden="true">✧</span>
-				</div>
-				<div class="counter-section" id="contador">
-					<p class="counter-section__heading">Todo esse tempo, lado a lado</p>
-					<div class="counter" id="counter" aria-live="polite">
-						<div class="counter__units" id="counter-units">
-							<div class="counter__calendar" aria-label="Tempo desde que nos conhecemos">
-								<div class="counter__unit"><span id="count-years">0</span><small id="count-years-label">anos</small></div>
-								<span class="counter__separator" aria-hidden="true">·</span>
-								<div class="counter__unit"><span id="count-months">0</span><small id="count-months-label">meses</small></div>
-								<span class="counter__separator" aria-hidden="true">·</span>
-								<div class="counter__unit"><span id="count-days">0</span><small id="count-days-label">dias</small></div>
-							</div>
-							<div class="counter__clock" aria-label="Horas, minutos e segundos desde o último dia completo">
-								<span><b id="count-hours">00</b><small>horas</small></span>
-								<i aria-hidden="true">:</i>
-								<span><b id="count-minutes">00</b><small>minutos</small></span>
-								<i aria-hidden="true">:</i>
-								<span><b id="count-seconds">00</b><small>segundos</small></span>
-							</div>
-						</div>
-						<p class="counter__empty" id="counter-empty">O contador aparecerá quando a data do primeiro encontro estiver configurada.</p>
-					</div>
-				</div>
-				<div class="timeline" id="timeline" aria-live="polite"></div>
-				<p class="empty-note" id="timeline-empty">Nossa história está esperando pelas suas datas, fotos e palavras. Adicione as memórias em <code>config.js</code>.</p>
-			</section>
-
-			<section class="constellation section-shell" id="estrelas">
-				<div class="section-heading section-heading--center reveal">
-					<p class="eyebrow">capítulo dois</p>
-					<h2>Tudo o que amo <em>em você.</em></h2>
-					<p class="section-heading__note">Existem tantas coisas em você que me fazem te amar... e escondi algumas delas nesse pedacinho do universo.</p>
-				</div>
-				<div class="star-instructions reveal">
-					<p class="star-instructions__prompt">✨ Toque nas estrelas brilhantes para descobrir!</p>
-					<p class="star-instructions__detail">Cada estrela revela um motivo diferente pelo qual eu amo você.</p>
-				</div>
-				<div class="star-field" id="star-field" aria-label="Estrelas com mensagens românticas"></div>
-				<div class="star-message" id="star-message" aria-live="polite"><span class="star-message__spark" aria-hidden="true">✦</span><p>Há coisas bonitas que merecem ser descobertas devagar.</p></div>
-				<div class="star-progress">
-					<p id="star-progress-label" aria-live="polite">Você descobriu 0 de 20 motivos</p>
-					<div class="star-progress__track" role="progressbar" aria-label="Progresso dos motivos descobertos" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0"><span id="star-progress-fill"></span></div>
-				</div>
-				<button class="secret secret--star" id="secret-star" type="button" aria-label="Descobrir uma surpresa especial" title="Uma surpresa para você">✧</button>
-			</section>
-
-			<section class="album-section section-shell" id="galeria">
-				<div class="section-heading section-heading--center reveal">
-					<p class="eyebrow">capítulo três</p>
-					<h2>Nossa história, página por página <span aria-hidden="true">&#10084;&#65039;</span></h2>
-					<p class="section-heading__note">Um álbum para voltar aos instantes que fazem o nosso mundo.</p>
-				</div>
-				<div class="album-cover" id="album-cover">
-					<div class="album-cover__book">
-						<div class="album-cover__image-wrap"><img id="album-cover-image" alt="Fotografia na capa do álbum" fetchpriority="high"></div>
-						<div class="album-cover__emboss" aria-hidden="true">✦</div>
-						<div class="album-cover__title"><span>nosso universo</span><h3>Nossa história,<br>página por página <i aria-hidden="true">♥</i></h3></div>
-					</div>
-					<button class="button button--primary album-open" id="album-open" type="button">Abrir nosso álbum <span aria-hidden="true">↗</span></button>
-				</div>
-				<p class="album-resource-status" id="album-resource-status" aria-live="polite" hidden></p>
-				<p class="album-error" id="album-error" aria-live="polite" hidden></p>
-				<div class="album-reader" id="album-reader" hidden>
-					<div class="album-book" id="album-book" aria-label="Álbum de memórias aberto">
-						<div class="album-spread" id="album-spread" aria-live="polite"></div>
-						<div class="album-turn-sheet" id="album-turn-sheet" aria-hidden="true"></div>
-						<span class="album-book__spine" aria-hidden="true"></span>
-					</div>
-					<div class="album-controls">
-						<button class="album-control" id="album-prev" type="button" aria-label="Virar para a página anterior" title="Página anterior">←</button>
-						<p class="album-page-count" id="album-page-count" aria-live="polite"></p>
-						<button class="album-control" id="album-next" type="button" aria-label="Virar para a próxima página" title="Próxima página">→</button>
-					</div>
-					<p class="album-swipe-hint">deslize ou use as setas para virar as páginas</p>
-				</div>
-			</section>
-
-			<section class="small-world section-shell section-shell--line" id="mundo">
-				<div class="section-heading reveal">
-					<p class="eyebrow">capítulo três</p>
-					<h2>O nosso pequeno <em>mundo.</em></h2>
-					<p class="section-heading__note">Coisas pequenas que, juntas, viram tudo.</p>
-				</div>
-				<div class="memory-grid" id="memory-grid"></div>
-				<p class="demo-note">Os cartões abaixo são exemplos editáveis, não lembranças reais. Troque pelos detalhes de vocês em <code>config.js</code>.</p>
-				<button class="secret secret--heart" id="secret-heart" type="button" aria-label="Abrir uma lembrança escondida" title="Uma lembrança escondida"><span aria-hidden="true">♥</span></button>
-			</section>
-
-			<section class="letter-section section-shell section-shell--line" id="carta">
-				<div class="section-heading section-heading--center reveal">
-					<p class="eyebrow">capítulo cinco</p>
-					<h2>Uma carta <em>só para você.</em></h2>
-					<p class="section-heading__note">Escrevi com o coração. Abra quando quiser.</p>
-				</div>
-				<button class="envelope" id="envelope" type="button" aria-expanded="false" aria-controls="love-letter">
-					<span class="envelope__letter" aria-hidden="true"><span>para você, com amor</span></span>
-					<span class="envelope__body" aria-hidden="true"></span>
-					<span class="envelope__flap" aria-hidden="true"></span>
-					<span class="envelope__seal" aria-hidden="true">♥</span>
-					<span class="envelope__instruction">toque para abrir</span>
-				</button>
-				<article class="love-letter" id="love-letter" hidden>
-					<p class="love-letter__salute" id="letter-salutation">Meu amor,</p>
-					<div class="love-letter__text" id="letter-text"></div>
-					<p class="love-letter__signoff" id="letter-signoff">Com todo o meu amor.</p>
-				</article>
-				<button class="secret secret--envelope" id="secret-envelope" type="button" aria-label="Abrir mais uma surpresa" title="Mais uma surpresa">✉</button>
-			</section>
-
-			<section class="finale" id="finale">
-				<div class="finale__sky" id="finale-sky" aria-hidden="true"></div>
-				<div class="finale__content" id="finale-content">
-					<p class="eyebrow">e agora, o meu maior desejo</p>
-					<h2>Quer saber qual é<br>o meu maior desejo?</h2>
-					<button class="button button--primary" id="wish-button" type="button">Descobrir meu desejo <span aria-hidden="true">&#9829;</span></button>
-				</div>
-				<div class="finale__reveal" id="finale-reveal" aria-live="polite">
-					<div class="finale__photos" id="finale-photos"></div>
-					<p class="finale__wish">Que todas as minhas próximas histórias tenham você.</p>
-					<p class="finale__love">Eu te amo. <span aria-hidden="true">&#9829;</span></p>
-				</div>
-				<div class="finale__footer">com amor, em todos os universos <span aria-hidden="true">✦</span></div>
-			</section>
+			<nav class="chapter-navigation" aria-label="Navegação entre capítulos">
+				<span aria-hidden="true"></span>
+				<p class="chapter-navigation__caption">um universo inteiro começa em nós</p>
+				<a class="chapter-nav-link chapter-nav-link--next" href="historia.html" data-chapter-link>Continuar nossa história <span aria-hidden="true">♥ →</span></a>
+			</nav>
 		</div>
 	</main>
 

@@ -1,0 +1,25 @@
+# Pacote de fotos e vídeos — Nosso Universo
+
+Este pacote contém **18 fotos e 4 vídeos** enviados nesta conversa, sem alterar os originais, além de 4 imagens de capa extraídas dos vídeos. Os títulos e textos no `album-manifest.json` são **sugestões** e a ordem é **temática**, pois não temos as datas das fotos.
+
+## Para usar no VS Code
+
+1. Extraia o ZIP.
+2. Copie as pastas `assets/fotos`, `assets/videos` e `assets/capas-videos` para dentro de `presente-do-meu-bebe/`, mesclando com as pastas existentes sem excluir outros arquivos.
+3. Copie `album-manifest.json` para a raiz do projeto.
+4. Passe o prompt do ChatGPT para o Codex: ele deverá ler o arquivo de configuração e **substituir apenas a galeria** por um álbum folheável, sem apagar outras partes do site.
+
+## Atenção ao publicar
+
+No GitHub Pages gratuito, os arquivos normalmente ficam em um **repositório público**, e visitantes podem descobrir/baixar as imagens e vídeos. Confirme com sua namorada se ela está confortável com isso; não publique memórias íntimas sem consentimento. O link não é proteção de acesso.
+
+## Desempenho de vídeos
+
+Utilize `preload="none"` ou `metadata`, com `poster` gerado e `playsinline controls`. Não reproduza vídeos automaticamente e pause a música de fundo enquanto um vídeo estiver tocando. Os arquivos de vídeo somam cerca de 27 MB, mas só devem carregar ao serem acionados.
+
+## Arquivos
+
+- `assets/fotos/` — as 18 fotos originais
+- `assets/videos/` — os 4 vídeos originais
+- `assets/capas-videos/` — miniaturas extraídas dos vídeos
+- `album-manifest.json` — ordem e textos sugeridos para o álbum
