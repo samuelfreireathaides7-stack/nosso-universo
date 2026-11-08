@@ -1,0 +1,119 @@
+{
+  "observacao": "Ordem temática sugerida, não cronológica. Textos são sugestões, não representam fatos confirmados. O álbum faz parte de um site existente.",
+  "pasta_fotos": "assets/fotos/",
+  "pasta_videos": "assets/videos/",
+  "pasta_capas_videos": "assets/capas-videos/",
+  "paginas": [
+    {
+      "id": "capa",
+      "titulo": "Nossa história, página por página",
+      "subtitulo": "Um pedacinho do que somos",
+      "layout": "capa",
+      "fotos": [
+        "33421.jpg"
+      ],
+      "videos": []
+    },
+    {
+      "id": "01",
+      "titulo": "A beleza de estar com você",
+      "texto": "Alguns instantes não precisam de muito para se tornarem especiais.",
+      "layout": "duas-fotos",
+      "fotos": [
+        "24293.jpg",
+        "4042.jpg"
+      ],
+      "videos": []
+    },
+    {
+      "id": "02",
+      "titulo": "Meu lugar favorito é com você",
+      "texto": "Existem abraços nos quais o mundo inteiro parece caber.",
+      "layout": "destaque-romantico",
+      "fotos": [
+        "7589.jpg",
+        "28051.jpg",
+        "5474.jpg"
+      ],
+      "videos": []
+    },
+    {
+      "id": "03",
+      "titulo": "Nossos pequenos momentos",
+      "texto": "É bonito como o simples vira memória quando estamos juntos.",
+      "layout": "mosaico-delicado",
+      "fotos": [
+        "8235.jpg",
+        "23128.jpg",
+        "23142.jpg",
+        "28113.jpg"
+      ],
+      "videos": []
+    },
+    {
+      "id": "04",
+      "titulo": "Nossa bagunça favorita",
+      "texto": "Porque com você até as nossas maiores besteiras viram histórias boas de contar.",
+      "layout": "scrapbook-divertido",
+      "fotos": [
+        "18459.jpg",
+        "3023.jpg",
+        "4942.jpg",
+        "28118.jpg"
+      ],
+      "videos": []
+    },
+    {
+      "id": "05",
+      "titulo": "Nossas aventuras",
+      "texto": "Cada passeio rende uma lembrança diferente.",
+      "layout": "foto-e-videos",
+      "fotos": [
+        "28053.jpg"
+      ],
+      "videos": [
+        "28185.mp4",
+        "28224.mp4"
+      ]
+    },
+    {
+      "id": "06",
+      "titulo": "Coisinhas que são nossas",
+      "texto": "São os pequenos detalhes que tornam a nossa história só nossa.",
+      "layout": "lembrancas-com-video",
+      "fotos": [
+        "28097.jpg",
+        "2927.jpg"
+      ],
+      "videos": [
+        "28212.mp4"
+      ]
+    },
+    {
+      "id": "07",
+      "titulo": "O que fica na memória",
+      "texto": "Se eu pudesse, guardaria cada risada com você num lugar para revisitar sempre.",
+      "layout": "foto-e-video",
+      "fotos": [
+        "23139.jpg"
+      ],
+      "videos": [
+        "28130.mp4"
+      ]
+    },
+    {
+      "id": "encerramento",
+      "titulo": "E ainda temos tantas páginas para escrever juntos...",
+      "texto": "Que todas as minhas próximas histórias tenham você.",
+      "layout": "encerramento",
+      "fotos": [],
+      "videos": []
+    }
+  ],
+  "capas_videos": {
+    "28130.mp4": "assets/capas-videos/28130.jpg",
+    "28185.mp4": "assets/capas-videos/28185.jpg",
+    "28212.mp4": "assets/capas-videos/28212.jpg",
+    "28224.mp4": "assets/capas-videos/28224.jpg"
+  }
+}
