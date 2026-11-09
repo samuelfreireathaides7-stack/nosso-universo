@@ -25,23 +25,14 @@
   chapter.title = "Capítulo do Nosso Universo";
   chapter.hidden = true;
   document.body.appendChild(chapter);
-  let pendingLayout = false;
-  function syncPosition() {
-    pendingLayout = false;
-    shell.classList.remove("youtube-shell--attached");
-    if (!chapter.hidden) return;
-    const box = slot.getBoundingClientRect();
-    if (box.width < 240 || box.height < 256 || box.top < 5 || box.bottom > innerHeight - 5) return;
-    shell.style.setProperty("--youtube-left", box.left + "px");
-    shell.style.setProperty("--youtube-top", box.top + "px");
-    shell.style.setProperty("--youtube-width", box.width + "px");
-    shell.style.setProperty("--youtube-height", box.height + "px");
-    shell.classList.add("youtube-shell--attached");
-  }
+  // O vídeo permanece no mesmo elemento e sempre fica fixo no viewport.
+  // Não reposicionar segundo o scroll: isso fazia o miniplayer subir na tela.
   function requestPosition() {
-    if (pendingLayout) return;
-    pendingLayout = true;
-    requestAnimationFrame(syncPosition);
+    shell.classList.remove("youtube-shell--attached","youtube-shell--avoid-nav");
+    shell.style.removeProperty("--youtube-left");
+    shell.style.removeProperty("--youtube-top");
+    shell.style.removeProperty("--youtube-width");
+    shell.style.removeProperty("--youtube-height");
   }
   const base = new URL("./", document.baseURI);
   const nameOf = url => url.pathname.split("/").pop() || "index.html";
@@ -89,8 +80,6 @@
     try { child = chapter.contentDocument; } catch (_) { return; }
     if (!child || !child.body) return;
     child.body.classList.add("is-framed-chapter");
-    child.addEventListener("scroll", requestPosition, {passive:true,capture:true});
-    child.defaultView.addEventListener("scroll", requestPosition, {passive:true});
     chapter.title = child.title || "Capítulo do Nosso Universo";
     child.addEventListener("click", event => {
       const link = event.target.closest("a[data-chapter-link]");
@@ -110,6 +99,5 @@
     requestPosition();
   });
   addEventListener("resize", requestPosition, {passive:true});
-  addEventListener("scroll", requestPosition, {passive:true});
   requestPosition();
 })();

@@ -116,3 +116,36 @@ body.is-framed-chapter .chapter-navigation { padding-bottom: 20rem; }
   .youtube-shell__video iframe { min-width: 200px; min-height: 220px; }
   body.is-framed-chapter .chapter-navigation { padding-bottom: calc(18rem + env(safe-area-inset-bottom, 0px)); }
 }
+
+
+/* v4 — miniplayer COM POSIÇÃO FIXA: nunca sobe nem acompanha a posição do conteúdo. */
+.youtube-shell,
+.youtube-shell.youtube-shell--attached,
+.youtube-shell.youtube-shell--avoid-nav {
+  position: fixed !important;
+  left: .65rem !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: calc(.65rem + env(safe-area-inset-bottom, 0px)) !important;
+  width: 226px !important;
+  height: 243px !important;
+  transform: none !important;
+}
+.youtube-shell__heading { height: 30px; }
+.youtube-shell__video { min-height: 210px; }
+.youtube-shell__video iframe { min-width: 200px; min-height: 210px; }
+@media(max-width:760px) {
+  .youtube-shell,
+  .youtube-shell.youtube-shell--attached,
+  .youtube-shell.youtube-shell--avoid-nav {
+    left: .4rem !important;
+    bottom: calc(.4rem + env(safe-area-inset-bottom, 0px)) !important;
+    width: 208px !important;
+    height: 236px !important;
+  }
+  .youtube-shell__heading {height: 28px;}
+  .youtube-shell__video {min-height: 205px;}
+  .youtube-shell__video iframe {min-width: 200px;min-height:205px;}
+  body.is-framed-chapter .chapter-navigation {padding-bottom: calc(18rem + env(safe-area-inset-bottom, 0px));}
+  .music-story {padding-bottom: calc(18rem + env(safe-area-inset-bottom,0px));}
+}
