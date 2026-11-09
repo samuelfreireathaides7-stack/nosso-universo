@@ -2,13 +2,11 @@
 window.OUR_UNIVERSE = {
   firstMeetingDate: "2025-05-07",
   letter: {
-    salutation: "Meu amor,",
+    salutation: "Meu bebezinho, ❤️",
     paragraphs: [
-      "Este espaço é seu, mas cada pedacinho dele nasceu pensando em nós.",
-      "Quero guardar aqui as nossas lembranças, os detalhes que só a gente entende e tudo aquilo que ainda vamos viver. Obrigado por fazer parte dos meus dias.",
-      "Que a vida continue nos encontrando, uma história bonita de cada vez."
+      "Oi meu neném não vou escrever muito pq vc já leu coisa dms hj né então só vou falar que amo vc e quero casar e morar junto😘😍"
     ],
-    signoff: "Com todo o meu amor."
+    signoff: "E só pra deixar claro: eu que amo mais. ❤️"
   },
   timeline: [
     {
