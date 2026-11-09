@@ -63,3 +63,14 @@ body.is-framed-chapter .music-story{padding-bottom:19rem}
 .youtube-inline-wrap{position:relative;width:100%;margin:1.1rem auto 0;border:1px solid rgba(233,212,167,.35);border-radius:14px;overflow:hidden;background:#080711;aspect-ratio:16/9;box-shadow:0 18px 45px rgba(0,0,0,.38)}
 .youtube-inline-player{display:block;width:100%;height:100%;border:0;min-height:220px}
 @media(max-width:760px){.youtube-inline-wrap{min-height:220px;aspect-ratio:16/10}}
+
+/* Player único: ele é exibido inteiro, sem ocultar o vídeo do YouTube. */
+body[data-chapter="2"] .youtube-slot { min-height:310px; width:100%; margin:1rem 0; display:grid; place-items:center; border:1px solid rgba(233,212,167,.28); border-radius:14px; background:linear-gradient(135deg,#100e1b,#342132); }
+body[data-chapter="2"] .youtube-slot__hint { font-size:.8rem; color:var(--gold); text-align:center; padding:1rem; }
+body[data-chapter="2"] .chapter-navigation { padding-bottom: min(38vh,21rem); }
+.youtube-shell { z-index:80; }
+.youtube-shell--attached { position:fixed; left:var(--youtube-left);top:var(--youtube-top);width:var(--youtube-width);height:var(--youtube-height);right:auto;bottom:auto; }
+#universe-chapter-frame { position:fixed;z-index:24;inset:0;width:100%;height:100%;border:0;background:#080711; }
+#universe-chapter-frame[hidden] { display:none!important; }
+body.is-framed-chapter .chapter-navigation { padding-bottom:19rem; }
+@media(max-width:760px) { .youtube-shell { width:min(340px,calc(100vw - 1rem));height:258px;right:.5rem;bottom:calc(.5rem + env(safe-area-inset-bottom,0px)); } .youtube-shell--attached { left:var(--youtube-left);top:var(--youtube-top);width:var(--youtube-width);height:var(--youtube-height);right:auto;bottom:auto; } }
