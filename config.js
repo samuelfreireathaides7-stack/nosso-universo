@@ -42,11 +42,11 @@ window.OUR_UNIVERSE = {
     "Porque, depois de tantas conversas, tantos \"te amo\" e tantos momentos nossos, eu continuo escolhendo você. E escolheria de novo, em qualquer universo."
   ],
   smallWorld: [
-    { front: "Um apelido carinhoso", back: "Escreva aqui o apelido especial de vocês.", tag: "APELIDO" },
-    { front: "Uma piada interna", back: "Conte aqui uma piada que só vocês entendem.", tag: "PIADA INTERNA" },
-    { front: "Uma frase clássica", back: "Aquela frase que sempre faz vocês sorrirem.", tag: "FRASE" },
-    { front: "Uma conversa querida", back: "Guarde aqui uma conversa que ficou no coração.", tag: "LEMBRANÇA" },
-    { front: "Um detalhe só nosso", back: "Um costume pequeno que significa muito.", tag: "DETALHE" },
-    { front: "Um plano para depois", back: "Um lugar ou momento que ainda querem viver.", tag: "FUTURO" }
+    { front: "Um apelido carinhoso 💗", back: "Bebezinho. É assim que eu amo te chamar, porque, pra mim, você sempre vai ser meu bebezinho.", tag: "APELIDO" },
+    { front: "Uma piada interna ✨", back: "Eu amo a menina de sobrancelha bonita. E você sabe muito bem quem é essa menina, né? ❤️", tag: "PIADA INTERNA" },
+    { front: "Uma frase clássica ♡", back: "“Você é meu bebezinho.” E não adianta falar que é só a “Júlia normal”, porque eu não vou mudar de ideia.", tag: "FRASE" },
+    { front: "Uma conversa querida 💍", back: "Quando a gente fala sobre casar, morar juntinhos e fazer tudo um com o outro. Eu amo imaginar nossa vida assim.", tag: "LEMBRANÇA" },
+    { front: "Um detalhe só nosso ❤️", back: "A gente se ama de verdade e quer viver junto de verdade. Não são só palavras: é a vida que eu quero construir com você.", tag: "DETALHE" },
+    { front: "Um plano para depois 🏡", back: "Casar com você e ter a nossa mansão. Pode até ser rosa, com flores e tudo, do jeitinho que a gente imagina.", tag: "FUTURO" }
   ]
 };
