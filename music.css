@@ -74,3 +74,10 @@ body[data-chapter="2"] .chapter-navigation { padding-bottom: min(38vh,21rem); }
 #universe-chapter-frame[hidden] { display:none!important; }
 body.is-framed-chapter .chapter-navigation { padding-bottom:19rem; }
 @media(max-width:760px) { .youtube-shell { width:min(340px,calc(100vw - 1rem));height:258px;right:.5rem;bottom:calc(.5rem + env(safe-area-inset-bottom,0px)); } .youtube-shell--attached { left:var(--youtube-left);top:var(--youtube-top);width:var(--youtube-width);height:var(--youtube-height);right:auto;bottom:auto; } }
+
+/* Player à esquerda e proteção dos botões de navegação. */
+.youtube-shell:not(.youtube-shell--attached){left:.85rem;right:auto;bottom:calc(.85rem + env(safe-area-inset-bottom,0px));top:auto;width:min(304px,calc(100vw - 1.7rem));height:260px}
+@media(max-width:760px){
+  .youtube-shell:not(.youtube-shell--attached){left:.55rem;right:auto;bottom:calc(.55rem + env(safe-area-inset-bottom,0px));top:auto;width:min(230px,calc(100vw - 1.1rem));height:255px}
+  .youtube-shell.youtube-shell--avoid-nav:not(.youtube-shell--attached){left:.55rem;right:auto;top:calc(5rem + env(safe-area-inset-top,0px));bottom:auto}
+}

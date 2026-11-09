@@ -26,9 +26,21 @@
   chapter.hidden = true;
   document.body.appendChild(chapter);
   let pendingLayout = false;
+  function updateNavigationSafety() {
+    // Em telas estreitas, move o player para cima quando os botões de capítulo aparecem.
+    let doc = document;
+    if (!chapter.hidden) {
+      try { doc = chapter.contentDocument; } catch (_) { doc = null; }
+    }
+    const navigation = doc && doc.querySelector(".chapter-navigation");
+    const rect = navigation ? navigation.getBoundingClientRect() : null;
+    const visible = rect && rect.top < innerHeight - 8 && rect.bottom > 20;
+    shell.classList.toggle("youtube-shell--avoid-nav", Boolean(visible && matchMedia("(max-width: 760px)").matches));
+  }
   function syncPosition() {
     pendingLayout = false;
     shell.classList.remove("youtube-shell--attached");
+    updateNavigationSafety();
     if (!chapter.hidden) return;
     const box = slot.getBoundingClientRect();
     if (box.width < 240 || box.height < 256 || box.top < 5 || box.bottom > innerHeight - 5) return;
@@ -89,6 +101,8 @@
     try { child = chapter.contentDocument; } catch (_) { return; }
     if (!child || !child.body) return;
     child.body.classList.add("is-framed-chapter");
+    child.addEventListener("scroll", requestPosition, {passive:true,capture:true});
+    child.defaultView.addEventListener("scroll", requestPosition, {passive:true});
     chapter.title = child.title || "Capítulo do Nosso Universo";
     child.addEventListener("click", event => {
       const link = event.target.closest("a[data-chapter-link]");
@@ -105,6 +119,7 @@
     child.addEventListener("play", event => {
       if (event.target.tagName === "VIDEO") window.UniverseYouTube.pause();
     }, true);
+    requestPosition();
   });
   addEventListener("resize", requestPosition, {passive:true});
   addEventListener("scroll", requestPosition, {passive:true});
