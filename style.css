@@ -294,3 +294,56 @@ code { color: var(--gold); font-family: var(--sans); font-size: .93em; }
   .cosmic-backdrop::before { transform: none; }
   .experience.chapter-entering { animation: none; }
 }
+
+/* Capítulo 6: cartões mais espaçados, altos e legíveis quando virados. */
+#memory-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.65rem;
+  align-items: stretch;
+}
+#memory-grid .memory-card,
+#memory-grid .memory-card__inner {
+  display: block;
+  width: 100%;
+  min-height: 19rem;
+}
+#memory-grid .memory-card {
+  height: 19rem;
+  min-width: 0;
+}
+#memory-grid .memory-card__inner {
+  height: 100%;
+}
+#memory-grid .memory-card__face {
+  padding: 1.4rem;
+  overflow-wrap: anywhere;
+  box-sizing: border-box;
+}
+#memory-grid .memory-card__back {
+  gap: .75rem;
+}
+#memory-grid .memory-card__back span {
+  font-size: 1rem;
+  line-height: 1.55;
+}
+@media (max-width: 1050px) {
+  #memory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+  #memory-grid .memory-card,
+  #memory-grid .memory-card__inner { min-height: 19rem; }
+  #memory-grid .memory-card { height: 19rem; }
+}
+@media (max-width: 760px) {
+  #memory-grid { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  #memory-grid .memory-card,
+  #memory-grid .memory-card__inner { min-height: 17.5rem; }
+  #memory-grid .memory-card { height: 17.5rem; }
+  #memory-grid .memory-card__face { padding: 1.4rem; }
+  #memory-grid .memory-card__back span { font-size: 1.03rem; line-height: 1.6; }
+}
+@media (max-width: 390px) {
+  #memory-grid { gap: 1.4rem; }
+  #memory-grid .memory-card,
+  #memory-grid .memory-card__inner { min-height: 19rem; }
+  #memory-grid .memory-card { height: 19rem; }
+  #memory-grid .memory-card__back span { font-size: .98rem; }
+}

@@ -186,7 +186,7 @@
     card.className = "memory-card";
     card.type = "button";
     card.setAttribute("aria-pressed", "false");
-    card.innerHTML = `<span class="memory-card__inner"><span class="memory-card__face memory-card__front"><small>${escapeHtml(memory.tag || "EXEMPLO")}</small><strong>${escapeHtml(memory.front || "Um detalhe")}</strong><i aria-hidden="true">＋</i></span><span class="memory-card__face memory-card__back"><small>EXEMPLO EDITÁVEL</small><span>${escapeHtml(memory.back || "Personalize este espaço.")}</span></span></span>`;
+    card.innerHTML = `<span class="memory-card__inner"><span class="memory-card__face memory-card__front"><small>${escapeHtml(memory.tag || "EXEMPLO")}</small><strong>${escapeHtml(memory.front || "Um detalhe")}</strong><i aria-hidden="true">＋</i></span><span class="memory-card__face memory-card__back"><small>UMA LEMBRANÇA NOSSA</small><span>${escapeHtml(memory.back || "Personalize este espaço.")}</span></span></span>`;
     card.addEventListener("click", () => {
       const flipped = card.classList.toggle("is-flipped");
       card.setAttribute("aria-pressed", String(flipped));
