@@ -81,3 +81,38 @@ body.is-framed-chapter .chapter-navigation { padding-bottom:19rem; }
   .youtube-shell:not(.youtube-shell--attached){left:.55rem;right:auto;bottom:calc(.55rem + env(safe-area-inset-bottom,0px));top:auto;width:min(230px,calc(100vw - 1.1rem));height:255px}
   .youtube-shell.youtube-shell--avoid-nav:not(.youtube-shell--attached){left:.55rem;right:auto;top:calc(5rem + env(safe-area-inset-top,0px));bottom:auto}
 }
+
+
+/* Miniplayer sempre acompanha a rolagem, fixo no canto esquerdo.
+   Vídeo inteiro e controles do YouTube continuam visíveis (mínimo 200x200). */
+.youtube-shell:not(.youtube-shell--attached),
+.youtube-shell.youtube-shell--avoid-nav:not(.youtube-shell--attached) {
+  position: fixed;
+  left: .7rem;
+  right: auto;
+  top: auto;
+  bottom: calc(.7rem + env(safe-area-inset-bottom, 0px));
+  width: 254px;
+  height: 263px;
+}
+.youtube-shell__heading { height: 31px; padding: 0 .65rem; font-size: .65rem; }
+.youtube-shell__video { min-height: 220px; }
+.youtube-shell__video iframe { min-width: 200px; min-height: 220px; }
+/* Ao chegar ao fim de um capítulo, espaço suficiente para os botões
+   subirem acima do miniplayer durante a rolagem. */
+body.is-framed-chapter .chapter-navigation { padding-bottom: 20rem; }
+@media (max-width: 760px) {
+  .youtube-shell:not(.youtube-shell--attached),
+  .youtube-shell.youtube-shell--avoid-nav:not(.youtube-shell--attached) {
+    left: .45rem;
+    right: auto;
+    top: auto;
+    bottom: calc(.45rem + env(safe-area-inset-bottom, 0px));
+    width: 214px;
+    height: 249px;
+  }
+  .youtube-shell__heading { height: 29px; padding: 0 .45rem; font-size: .58rem; }
+  .youtube-shell__video { min-height: 220px; }
+  .youtube-shell__video iframe { min-width: 200px; min-height: 220px; }
+  body.is-framed-chapter .chapter-navigation { padding-bottom: calc(18rem + env(safe-area-inset-bottom, 0px)); }
+}
