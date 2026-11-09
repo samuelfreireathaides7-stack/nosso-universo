@@ -25,15 +25,25 @@
   chapter.title = "Capítulo do Nosso Universo";
   chapter.hidden = true;
   document.body.appendChild(chapter);
-  // O vídeo permanece no mesmo elemento e sempre fica fixo no viewport.
-  // Não reposicionar segundo o scroll: isso fazia o miniplayer subir na tela.
+  // O iframe do YouTube NUNCA muda de elemento: só alterna entre
+  // tamanho grande na área reservada e miniplayer nas demais páginas.
+  // Assim a música pode continuar sem recarregar o vídeo.
   function requestPosition() {
-    shell.classList.remove("youtube-shell--attached","youtube-shell--avoid-nav");
-    shell.style.removeProperty("--youtube-left");
-    shell.style.removeProperty("--youtube-top");
-    shell.style.removeProperty("--youtube-width");
-    shell.style.removeProperty("--youtube-height");
+    const onMusicChapter = chapter.hidden;
+    shell.classList.remove("youtube-shell--attached", "youtube-shell--avoid-nav");
+    shell.classList.toggle("youtube-shell--inline", onMusicChapter);
+    if (!onMusicChapter) return;
+    // A camada é filha do body (position:relative): use coordenadas
+    // relativas ao body, não à janela, para rolar junto com o conteúdo.
+    const slotRect = slot.getBoundingClientRect();
+    const bodyRect = document.body.getBoundingClientRect();
+    shell.style.setProperty("--youtube-left", (slotRect.left - bodyRect.left) + "px");
+    shell.style.setProperty("--youtube-top", (slotRect.top - bodyRect.top) + "px");
+    shell.style.setProperty("--youtube-width", slotRect.width + "px");
+    shell.style.setProperty("--youtube-height", slotRect.height + "px");
   }
+  const hint = slot.querySelector(".youtube-slot__hint");
+  if (hint) hint.hidden = true;
   const base = new URL("./", document.baseURI);
   const nameOf = url => url.pathname.split("/").pop() || "index.html";
   const internal = url => url.origin === location.origin && url.pathname.startsWith(base.pathname);
@@ -99,5 +109,11 @@
     requestPosition();
   });
   addEventListener("resize", requestPosition, {passive:true});
-  requestPosition();
+  addEventListener("load", requestPosition, {once:true});
+  if ("ResizeObserver" in window) {
+    const observer = new ResizeObserver(() => requestAnimationFrame(requestPosition));
+    observer.observe(slot);
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(requestPosition);
+  requestAnimationFrame(requestPosition);
 })();

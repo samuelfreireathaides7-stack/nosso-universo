@@ -149,3 +149,40 @@ body.is-framed-chapter .chapter-navigation { padding-bottom: 20rem; }
   body.is-framed-chapter .chapter-navigation {padding-bottom: calc(18rem + env(safe-area-inset-bottom, 0px));}
   .music-story {padding-bottom: calc(18rem + env(safe-area-inset-bottom,0px));}
 }
+
+
+/* Página Nossa Música: encaixa o mesmo player na área reservada.
+   Somente nos outros capítulos ele vira um miniplayer fixo. */
+.youtube-shell.youtube-shell--inline {
+  position: absolute !important;
+  left: var(--youtube-left) !important;
+  top: var(--youtube-top) !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: var(--youtube-width) !important;
+  height: var(--youtube-height) !important;
+  transform: none !important;
+  border-radius: 14px;
+}
+.youtube-shell.youtube-shell--inline .youtube-shell__video {
+  min-height: 0;
+}
+.youtube-shell.youtube-shell--inline .youtube-shell__video iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+body[data-chapter="2"] .chapter-navigation { padding-bottom: 2.5rem; }
+body[data-chapter="2"] .music-story { padding-bottom: 3rem; }
+@media(max-width:760px) {
+  .youtube-shell.youtube-shell--inline {
+    left: var(--youtube-left) !important;
+    top: var(--youtube-top) !important;
+    bottom: auto !important;
+    width: var(--youtube-width) !important;
+    height: var(--youtube-height) !important;
+  }
+  body[data-chapter="2"] .music-story { padding-bottom: 3rem; }
+  body[data-chapter="2"] .chapter-navigation { padding-bottom: 2.5rem; }
+}
